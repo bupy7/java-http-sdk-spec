@@ -1,4 +1,4 @@
-package ru.mihaly4.sdkspec;
+package ru.mihaly4.httpsdkspec;
 
 import javax.annotation.Nullable;
 
