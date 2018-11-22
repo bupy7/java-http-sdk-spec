@@ -1,6 +1,8 @@
 java-http-sdk-spec
 =============
 
+<a href='https://bintray.com/bupy7/http-sdk-spec/java-http-sdk-spec?source=watch' alt='Get automatic notifications about new "java-http-sdk-spec" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_color.png'></a><a href='https://bintray.com/bupy7/http-sdk-spec/java-http-sdk-spec?source=watch' alt='Get automatic notifications about new "java-http-sdk-spec" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_color.png'></a>
+
 A specification library for any HTTP SDK on Java. This library provides basic interfaces to create own HTTP client for any API.
 
 Install
@@ -21,8 +23,6 @@ implementation 'ru.mihaly4.httpsdkspec:java-http-sdk-spec:<latest-version>'
   <version><latest-version></version>
 </dependency>
 ```
-
-See more [here](https://bintray.com/bupy7/http-sdk-spec/java-http-sdk-spec).
 
 LICENSE
 -------
