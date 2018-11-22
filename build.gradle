@@ -6,10 +6,27 @@
  * user guide available at https://docs.gradle.org/4.10.2/userguide/java_library_plugin.html
  */
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.9'
+    }
+}
+
 plugins {
     id 'java'
     id 'java-library'
     id 'idea'
+}
+apply plugin: 'com.novoda.bintray-release'
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
 }
 
 dependencies {
@@ -17,9 +34,19 @@ dependencies {
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
-// In this section you declare where to find the dependencies of your project
-repositories {
-    // Use jcenter for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+publish {
+    def keystorePropertiesFile = (File) project.file('keystore.properties')
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+    userOrg = 'bupy7'
+    groupId = 'ru.mihaly4.httpsdkspec'
+    artifactId = 'java-http-sdk-spec'
+    publishVersion = '0.0.1'
+    desc = 'A specification library for any HTTP SDK on Java. This library provides basic interfaces to create own HTTP client for any API.'
+    website = 'https://github.com/bupy7/java-http-sdk-spec'
+    bintrayUser = keystoreProperties.getProperty('bintrayUser')
+    bintrayKey = keystoreProperties.getProperty('bintrayKey')
+    dryRun = false
+    repoName = 'http-sdk-spec'
 }
