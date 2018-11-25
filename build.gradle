@@ -11,7 +11,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.9'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
 }
 
@@ -19,8 +19,12 @@ plugins {
     id 'java'
     id 'java-library'
     id 'idea'
+    id 'maven-publish'
 }
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.jfrog.bintray'
+
+version = '0.0.1'
+group = 'ru.mihaly4'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -34,19 +38,82 @@ dependencies {
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
-publish {
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+def pomConfig = (Object) {
+    licenses {
+        license {
+            name 'BSD 3-Clause'
+            url 'http://opensource.org/licenses/BSD-3-Clause'
+            distribution 'repo'
+        }
+    }
+    developers {
+        developer {
+            id 'bupy7'
+            name 'Vasily Belosloodcev'
+            email 'vasily.belosloodcev@gmail.com'
+        }
+    }
+
+    scm {
+        url 'https://github.com/bupy7/java-http-sdk-spec'
+    }
+}
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            groupId 'ru.mihaly4.httpsdkspec'
+            artifactId 'java-http-sdk-spec'
+            version project.version
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'A specification library for any HTTP SDK on Java. This library provides basic interfaces to create own HTTP client for any API.')
+                root.appendNode('name', 'HTTP SDK Specifications')
+                root.appendNode('url', 'https://github.com/bupy7/java-http-sdk-spec')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
     def keystorePropertiesFile = (File) project.file('keystore.properties')
     def keystoreProperties = new Properties()
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
-    userOrg = 'bupy7'
-    groupId = 'ru.mihaly4.httpsdkspec'
-    artifactId = 'java-http-sdk-spec'
-    publishVersion = '0.0.1'
-    desc = 'A specification library for any HTTP SDK on Java. This library provides basic interfaces to create own HTTP client for any API.'
-    website = 'https://github.com/bupy7/java-http-sdk-spec'
-    bintrayUser = keystoreProperties.getProperty('bintrayUser')
-    bintrayKey = keystoreProperties.getProperty('bintrayKey')
-    dryRun = false
-    repoName = 'http-sdk-spec'
+    user = keystoreProperties.getProperty('bintrayUser')
+    key = keystoreProperties.getProperty('bintrayKey')
+
+    publications = ['MyPublication']
+
+    pkg {
+        repo = 'http-sdk-spec'
+        name = 'java-http-sdk-spec'
+        userOrg = 'bupy7'
+        licenses = ['BSD-3-Clause']
+        vcsUrl = 'https://github.com/bupy7/java-http-sdk-spec.git'
+
+        version {
+            name = project.version
+            vcsTag = project.version
+            released  = new Date()
+
+            gpg {
+                sign = true
+                passphrase = keystoreProperties.getProperty('bintrayGpgPassPhrase')
+            }
+        }
+    }
 }
