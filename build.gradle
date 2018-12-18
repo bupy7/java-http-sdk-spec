@@ -74,6 +74,10 @@ def pomConfig = (Object) {
     }
 }
 publishing {
+    if (!project.file('keystore.properties').exists()) {
+        return
+    }
+
     publications {
         MyPublication(MavenPublication) {
             from components.java
@@ -94,6 +98,10 @@ publishing {
 }
 
 bintray {
+    if (!project.file('keystore.properties').exists()) {
+        return
+    }
+
     def keystorePropertiesFile = (File) project.file('keystore.properties')
     def keystoreProperties = new Properties()
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
