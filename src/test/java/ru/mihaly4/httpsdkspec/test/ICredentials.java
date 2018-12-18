@@ -1,4 +1,4 @@
-package ru.mihaly4.httpsdkspec.asset.client;
+package ru.mihaly4.httpsdkspec.test;
 
 import javax.annotation.Nonnull;
 

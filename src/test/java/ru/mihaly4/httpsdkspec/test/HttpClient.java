@@ -1,4 +1,4 @@
-package ru.mihaly4.httpsdkspec.asset.client;
+package ru.mihaly4.httpsdkspec.test;
 
 import java.io.File;
 import java.io.IOException;
