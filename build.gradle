@@ -23,7 +23,7 @@ plugins {
 }
 apply plugin: 'com.jfrog.bintray'
 
-version = '0.0.2'
+version = '1.0.0'
 group = 'ru.mihaly4'
 
 // In this section you declare where to find the dependencies of your project

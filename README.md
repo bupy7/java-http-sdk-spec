@@ -7,6 +7,11 @@ java-http-sdk-spec
 
 This library provides basic interfaces to create own HTTP client for most API types.
 
+Documentation
+-------------
+
+TODO
+
 Install
 -------
 
