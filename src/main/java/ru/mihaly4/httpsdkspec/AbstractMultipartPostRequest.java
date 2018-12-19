@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Map;
 
-public abstract class AbstractPlainPostRequest implements IPostRequest<Map<String, String>> {
+public abstract class AbstractMultipartPostRequest implements IMultipartPostRequest {
     @Nullable
     @Override
     public ISerialize<Map<String, String>> getParams() {

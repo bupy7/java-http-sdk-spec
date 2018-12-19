@@ -17,8 +17,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import ru.mihaly4.httpsdkspec.IFormPostRequest;
 import ru.mihaly4.httpsdkspec.IGetRequest;
-import ru.mihaly4.httpsdkspec.IPostRequest;
+import ru.mihaly4.httpsdkspec.IMultipartPostRequest;
 
 public class HttpClient {
     private static final String HEADER_AUTH_TOKEN = "Example-Auth-Token";
@@ -39,23 +40,28 @@ public class HttpClient {
     }
 
     @Nullable
-    public Response sendPost(@Nonnull IPostRequest<Map<String, String>> request) {
-        // body data
-        RequestBody requestBody;
-        if (request.getFiles() == null) {
-            FormBody.Builder bodyBuilder = new FormBody.Builder();
+    public Response sendFormPost(@Nonnull IFormPostRequest request) {
+        FormBody.Builder bodyBuilder = new FormBody.Builder();
 
-            if (request.getBody() != null) {
-                for (Map.Entry<String, String> entry : request.getBody().serialize().entrySet()) {
-                    bodyBuilder.add(entry.getKey(), entry.getValue());
-                }
+        if (request.getBody() != null) {
+            for (Map.Entry<String, String> entry : request.getBody().serialize().entrySet()) {
+                bodyBuilder.add(entry.getKey(), entry.getValue());
             }
+        }
 
-            requestBody = bodyBuilder.build();
-        } else {
-            MultipartBody.Builder bodyBuilder = new MultipartBody.Builder();
-            bodyBuilder.setType(MultipartBody.FORM);
+        return sendPost(
+                bodyBuilder.build(),
+                request.getResource(),
+                request.getParams() != null ? request.getParams().serialize() : null
+        );
+    }
 
+    @Nullable
+    public Response sendMultipartPost(@Nonnull IMultipartPostRequest request) {
+        MultipartBody.Builder bodyBuilder = new MultipartBody.Builder();
+        bodyBuilder.setType(MultipartBody.FORM);
+
+        if (request.getFiles() != null) {
             for (Map.Entry<String, File> entry : request.getFiles().serialize().entrySet()) {
                 File file = entry.getValue();
 
@@ -77,31 +83,18 @@ public class HttpClient {
                         RequestBody.create(MediaType.parse(mimeType), file)
                 );
             }
-            if (request.getBody() != null) {
-                for (Map.Entry<String, String> entry : request.getBody().serialize().entrySet()) {
-                    bodyBuilder.addFormDataPart(entry.getKey(), entry.getValue());
-                }
+        }
+        if (request.getBody() != null) {
+            for (Map.Entry<String, String> entry : request.getBody().serialize().entrySet()) {
+                bodyBuilder.addFormDataPart(entry.getKey(), entry.getValue());
             }
-
-            requestBody = bodyBuilder.build();
         }
 
-        // http request
-        String url = createUrl(
+        return sendPost(
+                bodyBuilder.build(),
                 request.getResource(),
-                entryPoint,
                 request.getParams() != null ? request.getParams().serialize() : null
         );
-        if (url.isEmpty()) {
-            return null;
-        }
-
-        Request httpRequest = new Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .build();
-
-        return execute(httpRequest);
     }
 
     @Nullable
@@ -157,6 +150,25 @@ public class HttpClient {
             instance = client.build();
         }
         return instance;
+    }
+
+    @Nullable
+    private Response sendPost(
+            @Nonnull RequestBody requestBody,
+            @Nonnull String resource,
+            @Nullable Map<String, String> params
+    ) {
+        String url = createUrl(resource, entryPoint, params);
+        if (url.isEmpty()) {
+            return null;
+        }
+
+        Request httpRequest = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        return execute(httpRequest);
     }
 
     private class AuthInterceptor implements Interceptor {

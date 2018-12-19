@@ -58,7 +58,7 @@ public class HttpClientTest {
         fakeRequest.getBody().setValue2("1234password");
 
         credentials.setAuth(false);
-        Response response = httpClient.sendPost(fakeRequest);
+        Response response = httpClient.sendFormPost(fakeRequest);
 
         assertNotNull(response);
         assertTrue(response.isSuccessful());
@@ -77,7 +77,7 @@ public class HttpClientTest {
         fakeRequest.getBody().setValue2("1234password");
 
         credentials.setAuth(false);
-        Response response = httpClient.sendPost(fakeRequest);
+        Response response = httpClient.sendFormPost(fakeRequest);
 
         assertNotNull(response);
         assertFalse(response.isSuccessful());
@@ -97,7 +97,7 @@ public class HttpClientTest {
         fakeRequest.getFiles().setFile1(new File(getClass().getResource("/fixture/data/1.jpg").getFile()));
 
         credentials.setAuth(true);
-        Response response = httpClient.sendPost(fakeRequest);
+        Response response = httpClient.sendMultipartPost(fakeRequest);
 
         assertNotNull(response);
         assertTrue(response.isSuccessful());
@@ -115,7 +115,7 @@ public class HttpClientTest {
         fakeRequest.getFiles().setFile1(new File(getClass().getResource("/fixture/data/1.jpg").getFile()));
 
         credentials.setAuth(true);
-        Response response = httpClient.sendPost(fakeRequest);
+        Response response = httpClient.sendMultipartPost(fakeRequest);
 
         assertNotNull(response);
         assertFalse(response.isSuccessful());
@@ -163,7 +163,7 @@ public class HttpClientTest {
         );
     }
 
-    private static class FakePostRequest extends AbstractPlainPostRequest {
+    private static class FakePostRequest extends AbstractFormPostRequest {
         @Nullable
         private Body body;
 
@@ -209,7 +209,7 @@ public class HttpClientTest {
         }
     }
 
-    private static class FakePostUploadRequest extends AbstractPlainPostRequest {
+    private static class FakePostUploadRequest extends AbstractMultipartPostRequest {
         @Nullable
         private Body body;
         @Nullable
