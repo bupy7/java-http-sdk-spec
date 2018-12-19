@@ -88,7 +88,7 @@ publishing {
             version project.version
             pom.withXml {
                 def root = asNode()
-                root.appendNode('description', 'A specification library for any HTTP SDK on Java. This library provides basic interfaces to create own HTTP client for any API.')
+                root.appendNode('description', 'This library provides basic interfaces to create own HTTP client for most API types.')
                 root.appendNode('name', 'HTTP SDK Specifications')
                 root.appendNode('url', 'https://github.com/bupy7/java-http-sdk-spec')
                 root.children().last() + pomConfig

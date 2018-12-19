@@ -5,7 +5,7 @@ java-http-sdk-spec
 [![Download](https://api.bintray.com/packages/bupy7/http-sdk-spec/java-http-sdk-spec/images/download.svg) ](https://bintray.com/bupy7/http-sdk-spec/java-http-sdk-spec/_latestVersion)
 [![Build Status](https://travis-ci.org/bupy7/java-http-sdk-spec.svg?branch=master)](https://travis-ci.org/bupy7/java-http-sdk-spec)
 
-A specification library for any HTTP SDK on Java. This library provides basic interfaces to create own HTTP client for any API.
+This library provides basic interfaces to create own HTTP client for most API types.
 
 Install
 -------
