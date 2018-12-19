@@ -39,7 +39,7 @@ public class HttpClient {
     }
 
     @Nullable
-    public Response sendPost(@Nonnull IPostRequest request) {
+    public Response sendPost(@Nonnull IPostRequest<Map<String, String>> request) {
         // body data
         RequestBody requestBody;
         if (request.getFiles() == null) {

@@ -1,17 +1,18 @@
 package ru.mihaly4.httpsdkspec;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 
 public abstract class AbstractGetRequest implements IGetRequest {
     @Nullable
     @Override
-    public Serialize getParams() {
+    public ISerialize<Map<String, String>> getParams() {
         return null;
     }
 
     @Nullable
     @Override
-    public Serialize getHeaders() {
+    public ISerialize<Map<String, String>> getHeaders() {
         return null;
     }
 }

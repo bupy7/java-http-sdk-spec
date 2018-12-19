@@ -1,14 +1,16 @@
 package ru.mihaly4.httpsdkspec;
 
 import javax.annotation.Nullable;
+import java.io.File;
+import java.util.Map;
 
-public interface IPostRequest extends IRequest {
+public interface IPostRequest<T> extends IRequest {
     @Nullable
-    Serialize getBody();
+    ISerialize<T> getBody();
 
     @Nullable
-    Serialize getParams();
+    ISerialize<Map<String, String>> getParams();
 
     @Nullable
-    FileSerialize getFiles();
+    ISerialize<Map<String, File>> getFiles();
 }

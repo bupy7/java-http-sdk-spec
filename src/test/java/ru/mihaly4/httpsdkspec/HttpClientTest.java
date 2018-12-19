@@ -163,7 +163,7 @@ public class HttpClientTest {
         );
     }
 
-    private static class FakePostRequest extends AbstractPostRequest {
+    private static class FakePostRequest extends AbstractPlainPostRequest {
         @Nullable
         private Body body;
 
@@ -182,7 +182,7 @@ public class HttpClientTest {
             return "/fake/post";
         }
 
-        static class Body implements IPostRequest.Serialize {
+        static class Body implements IPostRequest.ISerialize<Map<String, String>> {
             @Nonnull
             private String value1 = "";
             @Nonnull
@@ -209,7 +209,7 @@ public class HttpClientTest {
         }
     }
 
-    private static class FakePostUploadRequest extends AbstractPostRequest {
+    private static class FakePostUploadRequest extends AbstractPlainPostRequest {
         @Nullable
         private Body body;
         @Nullable
@@ -239,7 +239,7 @@ public class HttpClientTest {
             return "/fake/post-upload";
         }
 
-        static class Body implements IPostRequest.Serialize {
+        static class Body implements IPostRequest.ISerialize<Map<String, String>> {
             @Nonnull
             private String value1 = "";
             @Nonnull
@@ -265,7 +265,7 @@ public class HttpClientTest {
             }
         }
 
-        static class Files implements IPostRequest.FileSerialize {
+        static class Files implements IPostRequest.ISerialize<Map<String, File>> {
             @Nullable
             private File file1;
 
@@ -306,7 +306,7 @@ public class HttpClientTest {
             return "/fake/get";
         }
 
-        static class Params implements IPostRequest.Serialize {
+        static class Params implements IPostRequest.ISerialize<Map<String, String>> {
             @Nonnull
             private String value1 = "";
             @Nonnull

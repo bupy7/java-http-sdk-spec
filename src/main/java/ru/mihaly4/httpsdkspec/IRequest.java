@@ -1,6 +1,5 @@
 package ru.mihaly4.httpsdkspec;
 
-import java.io.File;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -14,15 +13,10 @@ public interface IRequest {
     String getResource();
 
     @Nullable
-    Serialize getHeaders();
+    ISerialize<Map<String, String>> getHeaders();
 
-    interface Serialize {
+    interface ISerialize<T> {
         @Nonnull
-        Map<String, String> serialize();
-    }
-
-    interface FileSerialize {
-        @Nonnull
-        Map<String, File> serialize();
+        T serialize();
     }
 }
